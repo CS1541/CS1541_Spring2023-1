@@ -30,10 +30,7 @@ void inc_cpu(float* A, int n, int inc_count) {
 /////////////////////////////////////////////////////////////////////////
 __global__ void inc_gpu(float* A, int n, int inc_count)
 {
-	int i = blockIdx.x * blockDim.x + threadIdx.x;
-	for (int j=0; j<inc_count; j++) {
-		A[i] += 1;
-	}
+        // TODO: Implement the corresponding code for inc_cpu
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -61,9 +58,9 @@ void copy_host_to_device(float* A, int n)
 	gettimeofday (&tv ,   &tz);
 	time_start = (double)tv.tv_sec + (double)tv.tv_usec / 1000000.0;
 
-	cudaMalloc((void**) &d_A, sizeof(float) * n);
-	assert(d_A);
-	cudaMemcpy(d_A, A, sizeof(float) * n, cudaMemcpyHostToDevice);
+	// TODO:
+	// 1. Allocate memory for d_A using cudaMalloc.
+	// 2. Copy host array A to d_A using cudaMemcpy.
 
 	gettimeofday (&tv ,   &tz);
 	time_end = (double)tv.tv_sec + (double)tv.tv_usec / 1000000.0;
@@ -84,11 +81,8 @@ void copy_device_to_host(float* A, int n)
 	time_start = (double)tv.tv_sec + (double)tv.tv_usec / 1000000.0;
 
 	// TODO:
-	// 1. Copy result array d_C to C using cudaMemcpy.
-	// 2. Free memory allocated for d_A, d_B, d_C using cudaFree.
-
-	cudaMemcpy(A, d_A, sizeof(float) * n, cudaMemcpyDeviceToHost);
-	cudaFree(d_A);
+	// 1. Copy device array d_A to A using cudaMemcpy.
+	// 2. Free memory allocated for d_A using cudaFree.
 
 	gettimeofday (&tv ,   &tz);
 	time_end = (double)tv.tv_sec + (double)tv.tv_usec / 1000000.0;
@@ -106,7 +100,7 @@ int main(int argc, char** argv)
 	struct timeval tv;
 	struct timezone tz;
 
-	if(argc != 5) {printf("Usage: mat_mul_gpu <array size> <block size> <policy (1|2|3)> <(debug|nodebug)>\n") ; exit(2) ;}
+	if(argc != 5) {printf("Usage: vec_inc_gpu <inc count> <block size> <policy (1|2)> <(debug|nodebug)>\n") ; exit(2) ;}
 	int inc_count = atoi(argv[1]) ;		// number of times to increment each element
 	int block_size = atoi(argv[2]) ;	// size of thread block
 	int policy = atoi(argv[3]) ;		// 1 or 2
@@ -137,9 +131,9 @@ int main(int argc, char** argv)
 		gettimeofday (&tv ,   &tz);
 		time_start = (double)tv.tv_sec + (double)tv.tv_usec / 1000000.0;
 
-                dim3 dimBlock(block_size);
-                dim3 dimGrid(N / dimBlock.x);
-		inc_gpu <<<dimGrid, dimBlock>>> (d_A, N, inc_count);
+                // TODO: Launch kernel inc_gpu with parameters d_A, N, inc_count
+                // Thread block size should be block_size. 
+                // Calculate thread block number based on N and thread block size.
 
 		gpuErrchk( cudaPeekAtLastError() );
 		gpuErrchk( cudaDeviceSynchronize() );
