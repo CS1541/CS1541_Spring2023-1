@@ -29,7 +29,7 @@ class Cache: public MemObj
     Counter writeMisses;
     Counter writeBacks;
     // END Statistics
-
+    
     /** Handler for read memory requests.
      *
      * @param mreq - The memory request

@@ -55,7 +55,11 @@ class CacheCore {
      */
     uint32_t index2Row(uint32_t index) const {
       // TODO: Implement
-      return 0;
+      //row is floor(index/associativity) ? 
+      int row;
+      row = index/assoc;// std::floor(index/CacheCore::assoc);
+      //std::to_string(" index to row: " + row);
+      return row;
     }
 
     /** <B>TODO</B>: Returns the column for the given content array index.<br>
@@ -68,7 +72,11 @@ class CacheCore {
      */
     uint32_t index2Column(uint32_t index) const {
       // TODO: Implement
-      return 0;
+      //column is ceil(index/associativity) ? 
+      int column; 
+      column = index%assoc;
+      //std::cout<<"index to column "<<column;
+      return column;
     }
 
   public:
@@ -128,7 +136,7 @@ class CacheCore {
      * address of the replaced block to be used later for write back.
      *
      * @param addr - The accessed address
-     * @param rplcAaddr - The address of the dirty block that is replaced
+     * @param rplcAddr - The address of the dirty block that is replaced
      * (if it exists), or 0 otherwise
      *
      * @return The allocated cache block
